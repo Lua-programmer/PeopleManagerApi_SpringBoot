@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/people")
 public class PersonResource {
     public static final String ADD_ADDRESS = "/{id}/add-address";
+    public static final String ADDRESSES = "/{id}/addresses";
     private final PersonService service;
     public static final String ID = "/{id}";
 
@@ -58,5 +60,10 @@ public class PersonResource {
     public ResponseEntity<PersonDto> addAddressToPerson(@PathVariable("id") Long id, @RequestBody AddressDto address) {
         service.addAddressToPerson(id, address);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping( ADDRESSES)
+    public ResponseEntity<List<AddressDto>> findAllAddressToPerson(@PathVariable Long id) {
+        return ResponseEntity.ok().body(service.findAllAddressesToPerson(id));
     }
 }

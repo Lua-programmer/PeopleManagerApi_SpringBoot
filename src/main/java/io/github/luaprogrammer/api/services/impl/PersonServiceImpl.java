@@ -12,6 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PersonServiceImpl implements PersonService {
 
@@ -90,5 +93,11 @@ public class PersonServiceImpl implements PersonService {
 
         Person personSaved = pRepository.save(person);
         return mapper.map(personSaved, PersonDto.class);
+    }
+
+    @Override
+    public List<AddressDto> findAllAddressesToPerson(Long id) {
+        List<Address> addresses = aRepository.findAddressByPersonId(id);
+        return addresses.stream().map(a -> mapper.map(a, AddressDto.class)).collect(Collectors.toList());
     }
 }
