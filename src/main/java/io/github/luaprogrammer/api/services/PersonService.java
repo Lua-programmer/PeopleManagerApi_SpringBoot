@@ -10,4 +10,6 @@ public interface PersonService {
     Page<PersonDto> findAll(Pageable pageable);
 
     PersonDto create(PersonDto person);
+
+    PersonDto update(Long id, PersonDto person);
 }

@@ -38,4 +38,11 @@ public class PersonServiceImpl implements PersonService {
                 pRepository.save(mapper.map(person, Person.class)),
                 PersonDto.class);
     }
+
+    @Override
+    public PersonDto update(Long id, PersonDto person) {
+        person.setId(id);
+        return mapper.map(
+                pRepository.save(mapper.map(person, Person.class)), PersonDto.class);
+    }
 }

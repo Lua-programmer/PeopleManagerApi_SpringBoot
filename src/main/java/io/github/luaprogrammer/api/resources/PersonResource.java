@@ -38,4 +38,10 @@ public class PersonResource {
                 .buildAndExpand(service.create(person).getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
+    @PutMapping(ID)
+    public ResponseEntity<PersonDto> update(@PathVariable Long id, @RequestBody PersonDto user) {
+        service.update(id, user);
+        return ResponseEntity.noContent().build();
+    }
 }
