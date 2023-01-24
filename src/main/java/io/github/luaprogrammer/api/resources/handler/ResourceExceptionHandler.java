@@ -3,10 +3,8 @@ package io.github.luaprogrammer.api.resources.handler;
 import io.github.luaprogrammer.api.services.exceptions.DataIntegrityViolationException;
 import io.github.luaprogrammer.api.services.exceptions.ObjectNotFoundException;
 import io.github.luaprogrammer.api.services.exceptions.RuleBusinessException;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String CONSTANT_VALIDATION_LENGTH = "Length";
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<Errors> errors = errors(ex.getBindingResult());
         return handleExceptionInternal(ex, errors, headers, HttpStatus.BAD_REQUEST, request);
     }
