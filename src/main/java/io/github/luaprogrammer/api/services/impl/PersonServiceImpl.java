@@ -7,6 +7,8 @@ import io.github.luaprogrammer.api.model.dto.PersonDto;
 import io.github.luaprogrammer.api.repository.AddressRepository;
 import io.github.luaprogrammer.api.repository.PersonRepository;
 import io.github.luaprogrammer.api.services.PersonService;
+import io.github.luaprogrammer.api.services.exceptions.ObjectNotFoundException;
+import io.github.luaprogrammer.api.services.exceptions.RuleBusinessException;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +33,9 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonDto findById(Long id) {
         return mapper.map(
-                pRepository.findById(id),
+                pRepository.findById(id).orElseThrow(
+                        () -> new ObjectNotFoundException("Objeto não encontrado")
+                ),
                 PersonDto.class);
     }
 
@@ -49,6 +53,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonDto update(Long id, PersonDto person) {
+        pRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
         person.setId(id);
         return mapper.map(
                 pRepository.save(mapper.map(person, Person.class)), PersonDto.class);
@@ -57,7 +62,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void delete(Long id) {
         Person person = pRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Objeto não encontrado")
+                () -> new ObjectNotFoundException("Objeto não encontrado")
         );
         pRepository.delete(person);
     }
@@ -65,7 +70,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonDto addAddressToPerson(Long id, AddressDto address) {
         Person person = pRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Objeto não encontrado")
+                () -> new ObjectNotFoundException("Objeto não encontrado")
         );
 
         Address addressSaved = aRepository.save(mapper.map(address, Address.class));
@@ -82,11 +87,11 @@ public class PersonServiceImpl implements PersonService {
                 }
                 if (person.getAddresses().get(i).getPlace().equals(addressSaved.getPlace())
                         && person.getAddresses().get(i).getNumber().equals(addressSaved.getNumber())) {
-                    throw new RuntimeException("O número da casa e o logradouro já existe no sistema.");
+                    throw new RuleBusinessException("O número da casa e o logradouro já existe no sistema para essa pessoa.");
                 }
             }
         } else {
-            throw new RuntimeException("Você já preencheu o número máximo de endereços.");
+            throw new RuleBusinessException("Você já preencheu o número máximo de endereços.");
         }
 
         person.getAddresses().add(addressSaved);
@@ -97,6 +102,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<AddressDto> findAllAddressesToPerson(Long id) {
+        pRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
         List<Address> addresses = aRepository.findAddressByPersonId(id);
         return addresses.stream().map(a -> mapper.map(a, AddressDto.class)).collect(Collectors.toList());
     }
