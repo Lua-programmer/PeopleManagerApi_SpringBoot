@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -39,4 +40,16 @@ public class Person implements Serializable {
     @ToString.Exclude
     private List<Address> addresses;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(id, person.id) && Objects.equals(name, person.name) && Objects.equals(birthDate, person.birthDate) && Objects.equals(createdAt, person.createdAt) && Objects.equals(addresses, person.addresses);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, birthDate, createdAt, addresses);
+    }
 }

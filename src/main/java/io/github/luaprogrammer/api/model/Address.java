@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -40,4 +41,17 @@ public class Address implements Serializable {
     @JoinColumn(name = "personId")
     @ToString.Exclude
     private Person person;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(id, address.id) && Objects.equals(zipCode, address.zipCode) && Objects.equals(place, address.place) && Objects.equals(city, address.city) && Objects.equals(number, address.number) && Objects.equals(isPrincipal, address.isPrincipal) && Objects.equals(person, address.person);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, zipCode, place, city, number, isPrincipal, person);
+    }
 }
