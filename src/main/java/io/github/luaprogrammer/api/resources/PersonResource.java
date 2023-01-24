@@ -1,5 +1,6 @@
 package io.github.luaprogrammer.api.resources;
 
+import io.github.luaprogrammer.api.model.dto.AddressDto;
 import io.github.luaprogrammer.api.model.dto.PersonDto;
 import io.github.luaprogrammer.api.services.PersonService;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/people")
 public class PersonResource {
+    public static final String ADD_ADDRESS = "/{id}/add-address";
     private final PersonService service;
     public static final String ID = "/{id}";
 
@@ -49,6 +51,12 @@ public class PersonResource {
 
     public ResponseEntity<PersonDto> delete(@PathVariable Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(ADD_ADDRESS)
+    public ResponseEntity<PersonDto> addAddressToPerson(@PathVariable("id") Long id, @RequestBody AddressDto address) {
+        service.addAddressToPerson(id, address);
         return ResponseEntity.noContent().build();
     }
 }

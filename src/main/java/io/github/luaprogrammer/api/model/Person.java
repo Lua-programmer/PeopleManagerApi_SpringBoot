@@ -15,6 +15,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person implements Serializable {

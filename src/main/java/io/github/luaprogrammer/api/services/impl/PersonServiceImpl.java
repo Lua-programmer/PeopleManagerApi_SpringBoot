@@ -1,7 +1,10 @@
 package io.github.luaprogrammer.api.services.impl;
 
+import io.github.luaprogrammer.api.model.Address;
 import io.github.luaprogrammer.api.model.Person;
+import io.github.luaprogrammer.api.model.dto.AddressDto;
 import io.github.luaprogrammer.api.model.dto.PersonDto;
+import io.github.luaprogrammer.api.repository.AddressRepository;
 import io.github.luaprogrammer.api.repository.PersonRepository;
 import io.github.luaprogrammer.api.services.PersonService;
 import org.modelmapper.ModelMapper;
@@ -14,10 +17,12 @@ public class PersonServiceImpl implements PersonService {
 
     private final ModelMapper mapper;
     private final PersonRepository pRepository;
+    private final AddressRepository aRepository;
 
-    public PersonServiceImpl(ModelMapper mapper, PersonRepository pRepository) {
+    public PersonServiceImpl(ModelMapper mapper, PersonRepository pRepository, AddressRepository aRepository) {
         this.mapper = mapper;
         this.pRepository = pRepository;
+        this.aRepository = aRepository;
     }
 
     @Override
@@ -52,5 +57,38 @@ public class PersonServiceImpl implements PersonService {
                 () -> new RuntimeException("Objeto não encontrado")
         );
         pRepository.delete(person);
+    }
+
+    @Override
+    public PersonDto addAddressToPerson(Long id, AddressDto address) {
+        Person person = pRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Objeto não encontrado")
+        );
+
+        Address addressSaved = aRepository.save(mapper.map(address, Address.class));
+
+        addressSaved.setPerson(Person.builder().id(id).build());
+
+        if (person.getAddresses().size() <= 4) {
+            if (person.getAddresses().isEmpty()) {
+                addressSaved.setIsPrincipal(true);
+            }
+            for (int i = 0; i < person.getAddresses().size(); i++) {
+                if (person.getAddresses().get(i).getIsPrincipal() && addressSaved.getIsPrincipal()) {
+                    person.getAddresses().get(i).setIsPrincipal(false);
+                }
+                if (person.getAddresses().get(i).getPlace().equals(addressSaved.getPlace())
+                        && person.getAddresses().get(i).getNumber().equals(addressSaved.getNumber())) {
+                    throw new RuntimeException("O número da casa e o logradouro já existe no sistema.");
+                }
+            }
+        } else {
+            throw new RuntimeException("Você já preencheu o número máximo de endereços.");
+        }
+
+        person.getAddresses().add(addressSaved);
+
+        Person personSaved = pRepository.save(person);
+        return mapper.map(personSaved, PersonDto.class);
     }
 }
