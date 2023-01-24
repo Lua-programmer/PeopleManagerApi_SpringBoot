@@ -44,4 +44,11 @@ public class PersonResource {
         service.update(id, user);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping(ID)
+
+    public ResponseEntity<PersonDto> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

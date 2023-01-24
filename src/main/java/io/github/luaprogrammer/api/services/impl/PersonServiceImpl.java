@@ -45,4 +45,12 @@ public class PersonServiceImpl implements PersonService {
         return mapper.map(
                 pRepository.save(mapper.map(person, Person.class)), PersonDto.class);
     }
+
+    @Override
+    public void delete(Long id) {
+        Person person = pRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Objeto não encontrado")
+        );
+        pRepository.delete(person);
+    }
 }
