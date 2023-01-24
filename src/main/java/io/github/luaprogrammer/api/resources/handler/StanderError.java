@@ -14,4 +14,6 @@ public class StanderError {
     private Integer status;
     private String error;
     private String path;
+    public StanderError(String msg) {
+    }
 }

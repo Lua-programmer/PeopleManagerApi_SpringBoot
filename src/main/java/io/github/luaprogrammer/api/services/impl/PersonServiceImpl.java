@@ -7,6 +7,7 @@ import io.github.luaprogrammer.api.model.dto.PersonDto;
 import io.github.luaprogrammer.api.repository.AddressRepository;
 import io.github.luaprogrammer.api.repository.PersonRepository;
 import io.github.luaprogrammer.api.services.PersonService;
+import io.github.luaprogrammer.api.services.exceptions.DataIntegrityViolationException;
 import io.github.luaprogrammer.api.services.exceptions.ObjectNotFoundException;
 import io.github.luaprogrammer.api.services.exceptions.RuleBusinessException;
 import org.modelmapper.ModelMapper;
@@ -69,6 +70,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonDto addAddressToPerson(Long id, AddressDto address) {
+        validPrincipalAdress(address);
         Person person = pRepository.findById(id).orElseThrow(
                 () -> new ObjectNotFoundException("Objeto não encontrado")
         );
@@ -105,5 +107,11 @@ public class PersonServiceImpl implements PersonService {
         pRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
         List<Address> addresses = aRepository.findAddressByPersonId(id);
         return addresses.stream().map(a -> mapper.map(a, AddressDto.class)).collect(Collectors.toList());
+    }
+
+    private void validPrincipalAdress(AddressDto address) {
+        if (address.getIsPrincipal() == null) {
+            throw new DataIntegrityViolationException("O campo de endereço principal não pode ser nulo.");
+        }
     }
 }

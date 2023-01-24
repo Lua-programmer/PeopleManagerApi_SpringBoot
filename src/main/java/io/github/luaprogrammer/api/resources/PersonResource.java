@@ -3,6 +3,7 @@ package io.github.luaprogrammer.api.resources;
 import io.github.luaprogrammer.api.model.dto.AddressDto;
 import io.github.luaprogrammer.api.model.dto.PersonDto;
 import io.github.luaprogrammer.api.services.PersonService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -37,14 +38,14 @@ public class PersonResource {
     }
 
     @PostMapping
-    public ResponseEntity<PersonDto> create(@RequestBody PersonDto person) {
+    public ResponseEntity<PersonDto> create(@RequestBody @Valid PersonDto person) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(service.create(person).getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(ID)
-    public ResponseEntity<PersonDto> update(@PathVariable Long id, @RequestBody PersonDto user) {
+    public ResponseEntity<PersonDto> update(@PathVariable Long id, @RequestBody @Valid PersonDto user) {
         service.update(id, user);
         return ResponseEntity.noContent().build();
     }
@@ -57,7 +58,7 @@ public class PersonResource {
     }
 
     @PatchMapping(ADD_ADDRESS)
-    public ResponseEntity<PersonDto> addAddressToPerson(@PathVariable("id") Long id, @RequestBody AddressDto address) {
+    public ResponseEntity<PersonDto> addAddressToPerson(@PathVariable("id") Long id, @RequestBody @Valid AddressDto address) {
         service.addAddressToPerson(id, address);
         return ResponseEntity.noContent().build();
     }

@@ -2,8 +2,10 @@ package io.github.luaprogrammer.api.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +17,8 @@ public class PersonDto {
 
     private Long id;
 
+    @NotBlank(message = "Nome ")
+    @Length(message = "Nome ", min = 3, max = 15)
     private String name;
 
     @JsonFormat(pattern="dd/MM/yyyy")
