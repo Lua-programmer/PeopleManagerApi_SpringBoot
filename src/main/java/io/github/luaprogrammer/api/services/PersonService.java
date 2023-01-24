@@ -8,4 +8,6 @@ public interface PersonService {
     PersonDto findById(Long id);
 
     Page<PersonDto> findAll(Pageable pageable);
+
+    PersonDto create(PersonDto person);
 }

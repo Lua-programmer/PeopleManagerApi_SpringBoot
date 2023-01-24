@@ -1,5 +1,6 @@
 package io.github.luaprogrammer.api.services.impl;
 
+import io.github.luaprogrammer.api.model.Person;
 import io.github.luaprogrammer.api.model.dto.PersonDto;
 import io.github.luaprogrammer.api.repository.PersonRepository;
 import io.github.luaprogrammer.api.services.PersonService;
@@ -29,5 +30,12 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Page<PersonDto> findAll(Pageable pageable) {
         return pRepository.findAll(pageable).map(p -> mapper.map(p, PersonDto.class));
+    }
+
+    @Override
+    public PersonDto create(PersonDto person) {
+        return mapper.map(
+                pRepository.save(mapper.map(person, Person.class)),
+                PersonDto.class);
     }
 }
