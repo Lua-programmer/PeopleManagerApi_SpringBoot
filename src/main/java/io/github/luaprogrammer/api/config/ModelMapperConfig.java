@@ -1,4 +1,4 @@
-package io.github.luaprogrammer.api;
+package io.github.luaprogrammer.api.config;
 
 
 import org.modelmapper.ModelMapper;
