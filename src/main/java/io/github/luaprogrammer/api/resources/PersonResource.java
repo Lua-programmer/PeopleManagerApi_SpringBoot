@@ -36,8 +36,8 @@ public class PersonResource {
 
     @ApiOperation(value = "Retorna uma lista de pessoas")
     @GetMapping(produces="application/json")
-    public ResponseEntity<Page<PersonDto>> findAll(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.ok().body(service.findAll(pageable));
+    public ResponseEntity<List<PersonDto>> findAll() {
+        return ResponseEntity.ok().body(service.findAll());
     }
 
     @ApiOperation(value = "Cria uma pessoa")
