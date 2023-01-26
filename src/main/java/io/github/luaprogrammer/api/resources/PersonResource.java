@@ -4,10 +4,6 @@ import io.github.luaprogrammer.api.model.dto.AddressDto;
 import io.github.luaprogrammer.api.model.dto.PersonDto;
 import io.github.luaprogrammer.api.services.PersonService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -36,8 +32,8 @@ public class PersonResource {
 
     @ApiOperation(value = "Retorna uma lista de pessoas")
     @GetMapping(produces="application/json")
-    public ResponseEntity<Page<PersonDto>> findAll(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.ok().body(service.findAll(pageable));
+    public ResponseEntity<List<PersonDto>> findAll() {
+        return ResponseEntity.ok().body(service.findAll());
     }
 
     @ApiOperation(value = "Cria uma pessoa")

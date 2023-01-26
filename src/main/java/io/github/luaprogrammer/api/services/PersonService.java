@@ -10,7 +10,7 @@ import java.util.List;
 public interface PersonService {
     PersonDto findById(Long id);
 
-    Page<PersonDto> findAll(Pageable pageable);
+    List<PersonDto> findAll();
 
     PersonDto create(PersonDto person);
 

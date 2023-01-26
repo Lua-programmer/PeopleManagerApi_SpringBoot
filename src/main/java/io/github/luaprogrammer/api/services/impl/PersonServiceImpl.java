@@ -11,8 +11,6 @@ import io.github.luaprogrammer.api.services.exceptions.DataIntegrityViolationExc
 import io.github.luaprogrammer.api.services.exceptions.ObjectNotFoundException;
 import io.github.luaprogrammer.api.services.exceptions.RuleBusinessException;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,8 +39,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Page<PersonDto> findAll(Pageable pageable) {
-        return pRepository.findAll(pageable).map(p -> mapper.map(p, PersonDto.class));
+    public List<PersonDto> findAll() {
+        return pRepository.findAll().stream().map(p -> mapper.map(p, PersonDto.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -70,7 +68,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonDto addAddressToPerson(Long id, AddressDto address) {
-        validPrincipalAdress(address);
         Person person = pRepository.findById(id).orElseThrow(
                 () -> new ObjectNotFoundException("Objeto não encontrado")
         );
@@ -107,11 +104,5 @@ public class PersonServiceImpl implements PersonService {
         pRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
         List<Address> addresses = aRepository.findAddressByPersonId(id);
         return addresses.stream().map(a -> mapper.map(a, AddressDto.class)).collect(Collectors.toList());
-    }
-
-    private void validPrincipalAdress(AddressDto address) {
-        if (address.getIsPrincipal() == null) {
-            throw new DataIntegrityViolationException("O campo de endereço principal não pode ser nulo.");
-        }
     }
 }
