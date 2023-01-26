@@ -31,7 +31,12 @@ public class LocalConfig {
 
         Address a1 = new Address(1L, "58115-616", "Rua Joaquim Saraiva", "João Pessoa", 689L, true, p1);
         Address a2 = new Address(2L, "58115-616", "Rua Joaquim Saraiva", "João Pessoa", 689L, true, p2);
+        Address a3 = new Address(2L, "58115-616", "Rua Joaquim Saraiva", "João Pessoa", 689L, true, p2);
+        Address a4 = new Address(2L, "58115-616", "Rua Joaquim Saraiva", "João Pessoa", 689L, true, p2);
+        Address a5 = new Address(2L, "58115-616", "Rua Joaquim Saraiva", "João Pessoa", 689L, true, p2);
+        Address a6 = new Address(2L, "58115-616", "Rua Joaquim Saraiva", "João Pessoa", 689L, true, p2);
+
         pRepository.saveAll(List.of(p1, p2));
-        aRepository.saveAll(List.of(a1, a2));
+        aRepository.saveAll(List.of(a1, a2, a3, a4, a5, a6));
     }
 }
