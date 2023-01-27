@@ -100,7 +100,7 @@ class PersonServiceImplTest {
     @Test
     void whenAddAddressToPersonThenReturnRuleBusinessExceptionForNumberHouseEquals() {
         try {
-            service.addAddressToPerson(1L, addressDto);
+            service.addAddressToPerson(2L, addressDto);
         } catch (Exception e) {
             addressDto.setNumber(689L);
             assertEquals(RuleBusinessException.class, e.getClass());
@@ -112,6 +112,7 @@ class PersonServiceImplTest {
     void whenAddAddressToPersonThenReturnRuleBusinessExceptionForListAddressSizeEquals5() {
         try {
             addressDto.setPersonId(2L);
+            addressDto.setNumber(96L);
             service.addAddressToPerson(2L, addressDto);
         } catch (Exception e) {
             assertEquals(RuleBusinessException.class, e.getClass());
