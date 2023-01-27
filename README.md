@@ -69,7 +69,7 @@
 1° - Após clonar a aplicação: <b>git clone https://github.com/Lua-programmer/PeopleManagerApi_SpringBoot.git</b>
 <br>2° - Abra o terminal no diretório da aplicação e rode o comando <strong>./gradlew bootRun</strong></b>
 <br>3º - Confira a <a href="http://localhost:8080/swagger-ui.html">documentação<a/> com swagger ou se preferir importe o arquivo <strong>People Manager API.postman_collection</strong> para o seu Postman.
-<br>
+<br>4º - Para executar os testes, rode o comando <strong>./gradlew test</strong> no terminal da aplicação.
 <br>
 <br>
 <br>
