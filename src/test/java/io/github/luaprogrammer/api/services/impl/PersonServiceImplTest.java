@@ -100,9 +100,10 @@ class PersonServiceImplTest {
     @Test
     void whenAddAddressToPersonThenReturnRuleBusinessExceptionForNumberHouseEquals() {
         try {
+            addressDto.setNumber(689L);
+            addressDto.setPersonId(2L);
             service.addAddressToPerson(2L, addressDto);
         } catch (Exception e) {
-            addressDto.setNumber(689L);
             assertEquals(RuleBusinessException.class, e.getClass());
             assertEquals("O número da casa e o logradouro já existe no sistema para essa pessoa.", e.getMessage());
         }
